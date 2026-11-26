@@ -1,7 +1,0 @@
-<span class="badge"
-      [class.badge-inclus]="possede() && inclus()"
-      [class.badge-non-inclus]="possede() && !inclus()"
-      [class.badge-neutre]="!possede()"
-      [title]="possede() && !inclus() ? 'Le solfège est déjà inclus avec un autre cours choisi' : ''">
-  {{ libelle() }}
-</span>

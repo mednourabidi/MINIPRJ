@@ -45,8 +45,8 @@
       </ul>
 
       <div class="d-flex gap-2 flex-wrap">
-        <button class="btn btn-bordeaux" (click)="onAddToCart(i)" [disabled]="cartService.contient(i.id)">
-          {{ cartService.contient(i.id) ? 'Déjà dans le panier' : 'Ajouter au panier' }}
+        <button class="btn btn-bordeaux" (click)="onAddToCart(i)" [disabled]="dejaInscrit() || cartService.contient(i.id)">
+          {{ dejaInscrit() ? 'Déjà inscrit(e) à ce cours' : (cartService.contient(i.id) ? 'Déjà dans le panier' : 'Ajouter au panier') }}
         </button>
         <button class="btn btn-outline-bordeaux" (click)="onBack()">Retour à la liste</button>
       </div>

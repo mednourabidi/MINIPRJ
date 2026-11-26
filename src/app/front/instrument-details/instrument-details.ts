@@ -1,9 +1,10 @@
 import { DatePipe } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Instrument } from '../../models/instrument';
 import { InstrumentService } from '../../services/instrument-service';
 import { CartService } from '../../services/cart-service';
+import { EtudiantService } from '../../services/etudiant-service';
 import { DureePipe } from '../../pipes/duree-pipe';
 import { PRIX_SOLFEGE } from '../../config';
 
@@ -17,10 +18,18 @@ export class InstrumentDetails implements OnInit {
   private readonly router = inject(Router);
   private readonly instrumentService = inject(InstrumentService);
   readonly cartService = inject(CartService);
+  private readonly etudiantService = inject(EtudiantService);
 
   instrument = signal<Instrument | undefined>(undefined);
   introuvable = signal(false);
   prixSolfege = PRIX_SOLFEGE;
+
+  dejaInscrit = computed(() => {
+    const i = this.instrument();
+    const e = this.etudiantService.etudiant();
+    if (!i || !e) return false;
+    return e.instrumentIds.includes(i.id);
+  });
 
   ngOnInit(): void {
     const id = this.activatedRoute.snapshot.paramMap.get('id');

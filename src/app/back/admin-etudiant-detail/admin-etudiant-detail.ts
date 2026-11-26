@@ -110,11 +110,23 @@ export class AdminEtudiantDetail implements OnInit {
     });
   }
 
-  onRemove(idSeance: string) {
+  aRetirer = signal<Seance | undefined>(undefined);
+
+  onRemove(s: Seance) {
+    this.aRetirer.set(s);
+  }
+
+  onConfirmRemove() {
     const e = this.etudiant();
-    if (!e) return;
-    this.etudiantService.modifier({ ...e, seances: e.seances.filter(s => s.id != idSeance) }).subscribe(
+    const s = this.aRetirer();
+    this.aRetirer.set(undefined);
+    if (!e || !s) return;
+    this.etudiantService.modifier({ ...e, seances: e.seances.filter(x => x.id != s.id) }).subscribe(
       maj => this.etudiant.set(maj)
     );
+  }
+
+  onCancelRemove() {
+    this.aRetirer.set(undefined);
   }
 }
